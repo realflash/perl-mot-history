@@ -10,8 +10,33 @@ use Class::Tiny qw(ves_api_key _ua timeout);
 use Carp;
 use JSON;
 use Try::Tiny;
+use Scalar::Util qw(looks_like_number);
 
 our $VERSION = '0.01';
+
+sub BUILD
+{	
+	my ($self, $args) = @_;
+	
+	$self->_ua(LWP::UserAgent->new);
+	$self->_ua->timeout(10);
+	$self->_ua->env_proxy;
+	
+	croak "parameter 'ves_api_key' must be supplied to new" unless $self->ves_api_key;
+	croak "VES API key is malformed" unless length($self->ves_api_key) > 1;				# TODO make more complicated
+	croak "Timeout value must be a number in seconds" unless looks_like_number($self->timeout);
+}
+
+sub timeout
+{
+	my $self = shift;
+    if (@_) {
+		$self->_ua->timeout(shift);
+    }
+	return $self->_ua->timeout;
+}
+
+
 
 1;
 __END__
