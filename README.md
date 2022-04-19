@@ -1,2 +1,2 @@
-# perl-mot-history
-Perl module for querying the MOT history of a UK-registered vehicle
+# perl-uk-vehicle
+Perl module for querying the MOT and tax status of a UK-registered vehicle
