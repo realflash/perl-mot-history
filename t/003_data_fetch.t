@@ -22,8 +22,11 @@ SKIP: {
 
 	my $tool;
 	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'});
-
-
+	my $status;
+	ok($status = $tool->get("AA19AAA"));
+	ok(defined($status));
+	like($status->{'result'}, 1, "Valid car returns success code 1");
+	like($status->{'message'}, "success", "Valid car returns success message");
 }
 
 done_testing;
