@@ -12,12 +12,18 @@ use Config::Tiny;
 
 my $ves_test_url = "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles";
 
-my $tool;
-$tool = UK::Vehicle->new(ves_api_key => "KEY");
-
 SKIP: {
 	skip ("active API tests; no config found in ./t/config/test_config.ini") unless -e './t/config/test_config.ini' ;
 	note(" --- Running authentication tests - loading config ./t/config/test_config.ini");
+
+	# VALIDATE CONFIGURATION FILE
+	ok(my $config =  Config::Tiny->read( './t/config/test_config.ini' ) , 'Load Config defined at ./t/config/test_config.ini }' );
+	ok(defined($config->{'KEYS'}->{'VES_API_KEY'}), "Config file has a VES key in it");
+
+	my $tool;
+	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'});
+
+
 }
 
 done_testing;

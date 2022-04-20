@@ -23,7 +23,8 @@ sub BUILD
 	$self->_ua->env_proxy;
 	
 	croak "parameter 'ves_api_key' must be supplied to new" unless $self->ves_api_key;
-	croak "VES API key is malformed" unless length($self->ves_api_key) > 1;				# TODO make more complicated
+	croak "parameter 'ves_api_key' should be 40 characters long" unless length($self->ves_api_key) == 40;
+	croak "parameter 'ves_api_key' has invalid characters" unless $self->ves_api_key =~ /([a-z]|[A-Z]|[0-9]){40}/;			# TODO make more complicated
 	if(defined($args->{'timeout'}))
 	{
 		croak "Timeout value must be a number in seconds" unless looks_like_number($args->{'timeout'});
