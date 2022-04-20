@@ -24,14 +24,19 @@ sub BUILD
 	
 	croak "parameter 'ves_api_key' must be supplied to new" unless $self->ves_api_key;
 	croak "VES API key is malformed" unless length($self->ves_api_key) > 1;				# TODO make more complicated
-	croak "Timeout value must be a number in seconds" unless looks_like_number($self->timeout);
+	if(defined($args->{'timeout'}))
+	{
+		croak "Timeout value must be a number in seconds" unless looks_like_number($args->{'timeout'});
+		$self->timeout($args->{'timeout'});
+	}
 }
 
 sub timeout
 {
 	my $self = shift;
-    if (@_) {
-		$self->_ua->timeout(shift);
+	my $arg = shift;
+    if ($arg) {
+		$self->_ua->timeout($arg);
     }
 	return $self->_ua->timeout;
 }

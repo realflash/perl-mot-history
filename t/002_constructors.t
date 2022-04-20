@@ -19,7 +19,8 @@ like(dies { $tool = UK::Vehicle->new(timeout => 20); }, qr/parameter 'ves_api_ke
 like(dies { $tool = UK::Vehicle->new(ves_api_key => "KEY", timeout => "blah"); }, qr/Timeout value must be a number/, "Handled weird timeout value") or note($@);
 
 # And if it's all valid we should live
-ok(lives { $tool = UK::Vehicle->new(ves_api_key => "KEY", timeout => 20); }, "Valid constructor with timeout lives") or note($@);
 ok(lives { $tool = UK::Vehicle->new(ves_api_key => "KEY"); }, "Valid constructor without timeout lives") or note($@);
+ok(lives { $tool = UK::Vehicle->new(ves_api_key => "KEY", timeout => 20); }, "Valid constructor with timeout lives") or note($@);
+is($tool->timeout, 20, "Timeout successfully set");
 
 done_testing;
