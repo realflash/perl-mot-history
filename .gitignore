@@ -35,3 +35,4 @@ inc/
 /*.zip
 
 *geany
+t/config/test_config.ini
