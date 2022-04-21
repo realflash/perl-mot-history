@@ -22,7 +22,7 @@ SKIP: {
 	ok(defined($config->{'KEYS'}->{'VES_API_KEY'}), "Config file has a VES key in it");
 
 	my $tool;
-	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'}, _use_uat => 0);
+	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'}, _use_uat => 1);
 	my $status;
 
 	TODO: 
@@ -56,21 +56,22 @@ SKIP: {
 	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
 	ok(length($status->colour) > 2, "Colour has some text");
 	is(ref($status->dateOfLastV5CIssued), "DateTime", "V5C issue date is a DateTime");
-	my $v5c_date = DateTime->new(year => 2020, month => 07, day => 17, time_zone => 'Europe/London');
+	my $v5c_date = DateTime->new(year => 2019, month => 05, day => 20, time_zone => 'Europe/London');
 	is_deeply($status->dateOfLastV5CIssued, $v5c_date, "V5C issue date has correct values and time zone");
 	ok(looks_like_number($status->engineCapacity), "Engine capacity is a number");
-	ok(length($status->euroStatus) > 5, "Euro status has some text");
+	ok(length($status->euroStatus) > 4, "Euro status has some text");
+	dump $status->euroStatus;
 	ok(length($status->fuelType) > 2, "Fuel type has some text");
 	ok(length($status->make) > 1, "Manufacturer has some text");
 	is($status->manufacturer, $status->make, "Manufacturer is an alias for make");
 	is_deeply($status->markedForExport, 0, "markedForExport is a literal zero");
-	my $reg_month = DateTime->new(year => 2019, month => 07, time_zone => 'Europe/London');
+	my $reg_month = DateTime->new(year => 2019, month => 03, time_zone => 'Europe/London');
 	is_deeply($status->monthOfFirstRegistration, $reg_month, "V5C issue date has correct values and time zone");
 	ok(length($status->motStatus) > 1, "MOT status has some text");
 	is($status->registrationNumber, "AA19AAA", "Registration number is the same as the one we asked for");
 	is($status->vrm, "AA19AAA", "VRM is an alias of regsitraion Number"); 
 	ok(looks_like_number($status->revenueWeight), "revenueWeight is a number");
-	my $tax_due = DateTime->new(year => 2022, month => 07, day => 01, time_zone => 'Europe/London');
+	my $tax_due = DateTime->new(year => 2023, month => 04, day => 21, time_zone => 'Europe/London');
 	is_deeply($status->taxDueDate, $tax_due, "Tax due date has correct values and time zone");
 	ok(length($status->taxStatus) > 2, "taxStatus has some text");
 	ok(length($status->typeApproval) > 0, "typeApproval has some text");
