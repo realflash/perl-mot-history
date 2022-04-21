@@ -25,17 +25,37 @@ SKIP: {
 	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'}, _use_uat => 1);
 	my $status;
 
-	TODO: 
-	{
-		todo_skip('these tests only work in UAT',1);
-		# Simulated 400
-		ok($status = $tool->get("ER19BAD"), "Get method doesn't croak when HTTP status code is 400");
-		ok(defined($status), "Get method returns something when HTTP status code is 400");
-		is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
-		is($status->result, 0, "Bad car returns success code 0");
-		is($status->message, "400 Bad Request", "Invalid car returns error message");
-		sleep 1;
-	}
+	# Simulated 429 Too Many Requests
+	ok($status = $tool->get("ER19THR"), "Get method doesn't croak when HTTP status code is 429");
+	ok(defined($status), "Get method returns something when HTTP status code is 429");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 0, "Overuse returns success code 0");
+	is($status->message, "429 Too Many Requests", "Overuse returns error message");
+	sleep 1;
+
+	# Simulated 400 bad request
+	ok($status = $tool->get("ER19BAD"), "Get method doesn't croak when HTTP status code is 400");
+	ok(defined($status), "Get method returns something when HTTP status code is 400");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 0, "Bad car returns success code 0");
+	is($status->message, "400 Bad Request", "Invalid car returns error message");
+	sleep 1;
+
+	# Simulated 500 Internal Server Error
+	ok($status = $tool->get("ER19ERR"), "Get method doesn't croak when HTTP status code is 500");
+	ok(defined($status), "Get method returns something when HTTP status code is 500");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 0, "ISE returns success code 0");
+	is($status->message, "500 Internal Server Error", "ISE returns error message");
+	sleep 1;
+
+	# Simulated 503 Service Unavailable
+	ok($status = $tool->get("ER19MNT"), "Get method doesn't croak when HTTP status code is 503");
+	ok(defined($status), "Get method returns something when HTTP status code is 503");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 0, "Service unavailable returns success code 0");
+	is($status->message, "503 Service Unavailable", "ISE returns error message");
+	sleep 1;
 
 	# Get an unknown car
 	ok($status = $tool->get("AA19AAB"), "Get method doesn't croak");

@@ -74,7 +74,14 @@ sub get
 	if($response->is_error)
 	{
 		$json->{'result'} = 0;
-		$json->{'message'} = $message;
+		if($response->code != 429)
+		{	# For most errors the HTTP response contains everything we need to know
+			$json->{'message'} = $message;
+		}
+		else
+		{	# But for 429 the message is in the body
+			$json->{'message'} = $response->code." ".$json->{'message'};
+		}
 	}
 	else
 	{
