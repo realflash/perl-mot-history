@@ -52,6 +52,7 @@ SKIP: {
 	is($status->result, 1, "Valid car returns success code 1");
 	is($status->message, "success", "Valid car returns success message");
 	
+	# Check properties
 	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
 	ok(length($status->colour) > 2, "Colour has some text");
 	is(ref($status->dateOfLastV5CIssued), "DateTime", "V5C issue date is a DateTime");
@@ -63,6 +64,8 @@ SKIP: {
 	ok(length($status->make) > 1, "Manufacturer has some text");
 	is($status->manufacturer, $status->make, "Manufacturer is an alias for make");
 	is_deeply($status->markedForExport, 0, "markedForExport is a literal zero");
+	my $reg_month = DateTime->new(year => 2019, month => 07, time_zone => 'Europe/London');
+	is_deeply($status->monthOfFirstRegistration, $reg_month, "V5C issue date has correct values and time zone");
 }
 
 done_testing;

@@ -3,8 +3,8 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use subs qw(dateOfLastV5CIssued manufacturer markedForExport);
-use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport);
+use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration);
+use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration);
 use DateTime;
 
 sub BUILD
@@ -12,6 +12,7 @@ sub BUILD
 	my ($self, $args) = @_;
 
 	$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'}) if($args->{'dateOfLastV5CIssued'});
+	$self->monthOfFirstRegistration($args->{'monthOfFirstRegistration'}) if($args->{'monthOfFirstRegistration'});
 }
 
 sub markedForExport
@@ -59,6 +60,25 @@ sub dateOfLastV5CIssued
 		}
     }
 	return $self->{'dateOfLastV5CIssued'};
+}
+
+sub monthOfFirstRegistration
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		if(ref($newval) eq "DateTime")
+		{
+			$self->{'monthOfFirstRegistration'} = $newval;
+		}
+		else
+		{	# Assume YYYY-MM-DD as per data returned by the VES API
+			$self->{'monthOfFirstRegistration'} = DateTime->new(year => substr($newval, 0, 4), month => substr($newval, 5, 2), time_zone => 'Europe/London');
+		}
+    }
+	return $self->{'monthOfFirstRegistration'};
 }
 
 1;
