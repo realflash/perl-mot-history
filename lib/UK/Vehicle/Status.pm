@@ -3,7 +3,7 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-
+use Class::Tiny qw(result message);
 
 1;
 __END__

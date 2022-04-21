@@ -6,7 +6,12 @@ use warnings;
 use UK::Vehicle::Status;
 use LWP::UserAgent;
 use subs 'timeout';
-use Class::Tiny qw(ves_api_key _ua timeout);
+use Class::Tiny qw(ves_api_key _ua timeout _url),
+{
+	_uat_url => "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry",
+	_prod_url =>  "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry",
+	_use_uat => 0
+};
 use Carp;
 use JSON;
 use Try::Tiny;
@@ -30,9 +35,49 @@ sub BUILD
 		croak "Timeout value must be a number in seconds" unless looks_like_number($args->{'timeout'});
 		$self->timeout($args->{'timeout'});
 	}
+	if($args->{'_use_uat'})
+	{
+		$self->_url($self->_uat_url);
+	}
+	else
+	{
+		$self->_url($self->_prod_url);
+	}
 }
 
-sub timeout
+sub get
+{
+	my $self = shift;
+	my $vrm = shift;
+
+	my $msg_json = "{\"registrationNumber\": \"$vrm\"}";
+	my $req = HTTP::Request->new('POST', $self->_url);
+	$req->header('Content-Type' => 'application/json');
+	$req->header('x-api-key' => $self->ves_api_key);
+	$req->content($msg_json);
+	my $response = $self->_ua->request($req);
+	my $content = $response->decoded_content();
+	my $json;
+	try
+	{
+		$json = decode_json($content);
+	};
+	my $message = $response->code." ".$response->message;
+	if($response->is_error)
+	{
+		$json->{'result'} = 0;
+		$json->{'message'} = $message;
+	}
+	else
+	{
+		$json->{'result'} = 1;
+		$json->{'message'} = "success";
+	}
+	
+	return UK::Vehicle::Status->new($json);
+}
+
+sub timeout($)
 {
 	my $self = shift;
 	my $arg = shift;
@@ -41,8 +86,6 @@ sub timeout
     }
 	return $self->_ua->timeout;
 }
-
-
 
 1;
 __END__

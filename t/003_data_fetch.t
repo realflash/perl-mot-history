@@ -21,13 +21,13 @@ SKIP: {
 	ok(defined($config->{'KEYS'}->{'VES_API_KEY'}), "Config file has a VES key in it");
 
 	my $tool;
-	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'});
+	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'}, _use_uat => 1);
 	my $status;
 	ok($status = $tool->get("AA19AAA"), "Get method doesn't croak");
 	ok(defined($status), "Get method returns something");
-	like(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
-	like($status->result, 1, "Valid car returns success code 1");
-	like($status->message, "success", "Valid car returns success message");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 1, "Valid car returns success code 1");
+	is($status->message, "success", "Valid car returns success message");
 	
 }
 
