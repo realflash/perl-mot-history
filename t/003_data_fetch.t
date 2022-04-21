@@ -52,7 +52,7 @@ SKIP: {
 	is($status->message, "success", "Valid car returns success message");
 	dump $status;
 	
-	
+	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
 }
 
 done_testing;

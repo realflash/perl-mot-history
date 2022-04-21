@@ -3,7 +3,7 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use Class::Tiny qw(result message);
+use Class::Tiny qw(result message co2Emissions);
 
 1;
 __END__
