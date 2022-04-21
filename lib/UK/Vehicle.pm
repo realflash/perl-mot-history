@@ -148,51 +148,9 @@ Optionally also set the connect timeout in seconds. Default value is 10.
    $status->make; # "ROVER" etc.
 
 Query the API for the publicly-available information about a vehicle. 
-Returns a L<UK::Vehicle::Status>, which has convenience methods but is
-also just a wrapper around the perl representation of the JSON object 
-returned by the VES API:
-
-	{
-	  "result" => 1,
-	  "message" => success,
-	  "registrationNumber" => "WN67DSO",
-	  "taxStatus" => "Untaxed",
-	  "taxDueDate" => "2017-12-25",
-	  "artEndDate" => "2007-12-25",
-	  "motStatus" => "No details held by DVLA",
-	  "motExpiryDate" => "2008-12-25",
-	  "make" => "ROVER",
-	  "monthOfFirstDvlaRegistration" => "2011-11",
-	  "monthOfFirstRegistration" => "2012-12",
-	  "yearOfManufacture" => 2004,
-	  "engineCapacity" => 1796,
-	  "co2Emissions" => 0,
-	  "fuelType" => "PETROL",
-	  "markedForExport" => true,
-	  "colour" => "Blue",
-	  "typeApproval" => "N1",
-	  "wheelplan" => "NON STANDARD",
-	  "revenueWeight" => 1640,
-	  "realDrivingEmissions" => "1",
-	  "dateOfLastV5CIssued" => "2016-12-25",
-	  "euroStatus" => "Euro 5"
-	}
-   
-You can access any of these pieces of data by directly referencing 
-that value in the hash reference:
-
-   print $result->{'make'};
-
-or use the corresponding convenience method:
-
-   print $result->make;
-
-There may be differences in the values returned; for example
-
-	$result->{'taxDueDate'}		# get the raw string returned by the API
-	$result->taxDueDate			# get a L<DateTime> representing the date
-
-For more information, see L<UK::Vehicle::Status>.
+Returns a L<UK::Vehicle::Status>, which has accessor methods for each of
+the properties returned by the VES API. For more information, see 
+L<UK::Vehicle::Status>.
    
 Any spaces in the VRM you provide will be automatically removed. Lower
  case characters will be changed to upper case. If the
