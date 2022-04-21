@@ -69,6 +69,7 @@ SKIP: {
 	ok(length($status->motStatus) > 1, "MOT status has some text");
 	is($status->registrationNumber, "AA19AAA", "Registration number is the same as the one we asked for");
 	is($status->vrm, "AA19AAA", "VRM is an alias of regsitraion Number"); 
+	ok(looks_like_number($status->revenueWeight), "revenueWeight is a number");
 }
 
 done_testing;

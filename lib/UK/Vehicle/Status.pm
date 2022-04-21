@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration vrm);
 use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration
-					motStatus registrationNumber vrm);
+					motStatus registrationNumber vrm revenueWeight);
 use DateTime;
 
 sub BUILD
