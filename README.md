@@ -1,2 +1,4 @@
 # perl-uk-vehicle
-Perl module for querying the MOT and tax status of a UK-registered vehicle
+
+This is a Perl module for querying the MOT and tax status of a UK-registered vehicle. See [MetaCPAN](https://metacpan.org/pod/UK::Vehicle) for usage documentation.
+
