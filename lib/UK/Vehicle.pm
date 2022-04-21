@@ -17,7 +17,7 @@ use JSON;
 use Try::Tiny;
 use Scalar::Util qw(looks_like_number);
 
-our $VERSION = '0.01';
+our $VERSION = '0.1';
 
 sub BUILD
 {	
