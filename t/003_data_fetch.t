@@ -72,6 +72,12 @@ SKIP: {
 	ok(looks_like_number($status->revenueWeight), "revenueWeight is a number");
 	my $tax_due = DateTime->new(year => 2022, month => 07, day => 01, time_zone => 'Europe/London');
 	is_deeply($status->taxDueDate, $tax_due, "Tax due date has correct values and time zone");
+	ok(length($status->taxStatus) > 2, "taxStatus has some text");
+	ok(length($status->typeApproval) > 0, "typeApproval has some text");
+	ok(length($status->wheelplan) > 2, "wheelplan has some text");
+	is($status->wheelPlan, $status->wheelPlan, "wheelPlan is an alias for wheelplan");
+	my $year_made = DateTime->new(year => 2019, time_zone => 'Europe/London');
+	is_deeply($status->yearOfManufacture, $year_made, "Year made has correct values and time zone");
 }
 
 done_testing;

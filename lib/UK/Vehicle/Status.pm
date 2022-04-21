@@ -3,9 +3,9 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration vrm);
+use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration vrm taxDueDate yearOfManufacture wheelPlan);
 use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration
-					motStatus registrationNumber vrm revenueWeight taxDueDate);
+					motStatus registrationNumber vrm revenueWeight taxDueDate taxStatus typeApproval wheelplan wheelPlan yearOfManufacture);
 
 use DateTime;
 
@@ -16,6 +16,7 @@ sub BUILD
 	$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'}) if($args->{'dateOfLastV5CIssued'});
 	$self->monthOfFirstRegistration($args->{'monthOfFirstRegistration'}) if($args->{'monthOfFirstRegistration'});
 	$self->taxDueDate($args->{'taxDueDate'}) if($args->{'taxDueDate'});
+	$self->yearOfManufacture($args->{'yearOfManufacture'}) if($args->{'yearOfManufacture'});
 }
 
 sub markedForExport
@@ -30,6 +31,20 @@ sub markedForExport
 	
 	if($self->{'markedForExport'}) { return 1 };		# Looks pointless but converts JSON::PP::Boolean into 1 or 0
 	return 0;
+}
+
+# Alias for registrationNumber
+sub wheelPlan
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		$self->wheelplan($newval);
+	}
+	
+	return $self->wheelplan;
 }
 
 # Alias for registrationNumber
@@ -118,6 +133,25 @@ sub monthOfFirstRegistration
 	return $self->{'monthOfFirstRegistration'};
 }
 
+sub yearOfManufacture
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		if(ref($newval) eq "DateTime")
+		{
+			$self->{'yearOfManufacture'} = $newval;
+		}
+		else
+		{	# Assume year as a number as per data returned by the VES API
+			$self->{'yearOfManufacture'} = DateTime->new(year => $newval, time_zone => 'Europe/London');
+		}
+    }
+	return $self->{'yearOfManufacture'};
+}
+
 1;
 __END__
 
@@ -129,46 +163,46 @@ See L<UK::Vehicle> for usage information.
 
 =over 3
 
-=item is_mot_current()
+#~ =item is_mot_current()
 
-   $status->is_mot_current();
-   # returns 1 if there is a current, valid MOT. 0 otherwise.
+   #~ $status->is_mot_current();
+   #~ # returns 1 if there is a current, valid MOT. 0 otherwise.
    
-This method looks at the property motExpiryDate, and then checks 
-whether it is currently "valid". "Valid" means the following is true:
-=over 6
-=item * The last MoT test result was a pass
-=item * The current time in the timezone Europe/London is not 
-later than 23:59:59.000 on the expiry date.
-=back
-B<Yes>, as soon as vehicle fails an MoT, it no longer has a current 
-valid MoT even if it not yet one year after the last pass, and you 
-cannot legally drive it except under the limited circumstances provided
- for in the relevant law. B<Yes>, your MoT expires right at the very end
-of the expiry date so you can drive it right up to midnight on that day.
+#~ This method looks at the property motExpiryDate, and then checks 
+#~ whether it is currently "valid". "Valid" means the following is true:
+#~ =over 6
+#~ =item * The last MoT test result was a pass
+#~ =item * The current time in the timezone Europe/London is not 
+#~ later than 23:59:59.000 on the expiry date.
+#~ =back
+#~ B<Yes>, as soon as vehicle fails an MoT, it no longer has a current 
+#~ valid MoT even if it not yet one year after the last pass, and you 
+#~ cannot legally drive it except under the limited circumstances provided
+ #~ for in the relevant law. B<Yes>, your MoT expires right at the very end
+#~ of the expiry date so you can drive it right up to midnight on that day.
 
-=item is_tax_current()
+#~ =item is_tax_current()
 
-   $status->is_tax_current();
-   # returns 1 if the vehicle is taxed and can be on the road. 0 
-   otherwise
+   #~ $status->is_tax_current();
+   #~ # returns 1 if the vehicle is taxed and can be on the road. 0 
+   #~ otherwise
    
-This method looks at the property taxStatus, and then checks if it is 
-"Taxed". Any status other than this, whether SORNd or untaxed, will 
-return 0.
+#~ This method looks at the property taxStatus, and then checks if it is 
+#~ "Taxed". Any status other than this, whether SORNd or untaxed, will 
+#~ return 0.
 
-This method will croak if you have not yet called get().
+#~ This method will croak if you have not yet called get().
 
-=item is_sorn_declared()
+#~ =item is_sorn_declared()
 
-	$status->is_sorn_declared();
-	# returns 1 if a SORN has been made for the vehicle. 0 otherwise.
+	#~ $status->is_sorn_declared();
+	#~ # returns 1 if a SORN has been made for the vehicle. 0 otherwise.
 
-This method looks at the property taxStatus, and then checks if it is 
-"SORN". Any status other than this, whether taxed or untaxed, will 
-return 0.
+#~ This method looks at the property taxStatus, and then checks if it is 
+#~ "SORN". Any status other than this, whether taxed or untaxed, will 
+#~ return 0.
 
-This method will croak if you have not yet called get().
+#~ This method will croak if you have not yet called get().
    
 =back
 
