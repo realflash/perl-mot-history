@@ -70,6 +70,8 @@ SKIP: {
 	is($status->registrationNumber, "AA19AAA", "Registration number is the same as the one we asked for");
 	is($status->vrm, "AA19AAA", "VRM is an alias of regsitraion Number"); 
 	ok(looks_like_number($status->revenueWeight), "revenueWeight is a number");
+	my $tax_due = DateTime->new(year => 2022, month => 07, day => 01, time_zone => 'Europe/London');
+	is_deeply($status->taxDueDate, $tax_due, "Tax due date has correct values and time zone");
 }
 
 done_testing;

@@ -5,7 +5,8 @@ use strict;
 use warnings;
 use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration vrm);
 use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration
-					motStatus registrationNumber vrm revenueWeight);
+					motStatus registrationNumber vrm revenueWeight taxDueDate);
+
 use DateTime;
 
 sub BUILD
@@ -14,6 +15,7 @@ sub BUILD
 
 	$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'}) if($args->{'dateOfLastV5CIssued'});
 	$self->monthOfFirstRegistration($args->{'monthOfFirstRegistration'}) if($args->{'monthOfFirstRegistration'});
+	$self->taxDueDate($args->{'taxDueDate'}) if($args->{'taxDueDate'});
 }
 
 sub markedForExport
@@ -57,6 +59,26 @@ sub manufacturer
 	
 	return $self->make;
 }
+
+sub taxDueDate
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		if(ref($newval) eq "DateTime")
+		{
+			$self->{'taxDueDate'} = $newval;
+		}
+		else
+		{	# Assume YYYY-MM-DD as per data returned by the VES API
+			$self->{'taxDueDate'} = DateTime->new(year => substr($newval, 0, 4), month => substr($newval, 5, 2), day => substr($newval, 8, 2), time_zone => 'Europe/London');
+		}
+    }
+	return $self->{'taxDueDate'};
+}
+
 
 sub dateOfLastV5CIssued
 {
