@@ -50,6 +50,12 @@ sub get
 {
 	my $self = shift;
 	my $vrm = shift;
+	
+	# Input sanitisation
+	$vrm = $self->removeWhitespace($vrm);
+	$vrm = uc($vrm);
+	croak "VRM contains an unexpected character" if $vrm !~ /^([A-Z]|[0-9]|\s){1,}$/;
+	croak "VRM too long" if length($vrm) > 7;
 
 	my $msg_json = "{\"registrationNumber\": \"$vrm\"}";
 	my $req = HTTP::Request->new('POST', $self->_url."/v1/vehicles");
@@ -87,6 +93,16 @@ sub timeout($)
 		$self->_ua->timeout($arg);
     }
 	return $self->_ua->timeout;
+}
+
+sub removeWhitespace($)
+{ 
+	my $self = shift;
+	my $s = shift; 
+	
+	$s =~ s/\s+//g; 
+
+	return $s;
 }
 
 1;

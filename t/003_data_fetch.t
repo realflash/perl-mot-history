@@ -51,6 +51,7 @@ SKIP: {
 	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
 	is($status->result, 1, "Valid car returns success code 1");
 	is($status->message, "success", "Valid car returns success message");
+	sleep 1;
 	
 	# Check properties
 	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
@@ -60,7 +61,6 @@ SKIP: {
 	is_deeply($status->dateOfLastV5CIssued, $v5c_date, "V5C issue date has correct values and time zone");
 	ok(looks_like_number($status->engineCapacity), "Engine capacity is a number");
 	ok(length($status->euroStatus) > 4, "Euro status has some text");
-	dump $status->euroStatus;
 	ok(length($status->fuelType) > 2, "Fuel type has some text");
 	ok(length($status->make) > 1, "Manufacturer has some text");
 	is($status->manufacturer, $status->make, "Manufacturer is an alias for make");
@@ -79,6 +79,16 @@ SKIP: {
 	is($status->wheelPlan, $status->wheelPlan, "wheelPlan is an alias for wheelplan");
 	my $year_made = DateTime->new(year => 2019, time_zone => 'Europe/London');
 	is_deeply($status->yearOfManufacture, $year_made, "Year made has correct values and time zone");
+
+	# VRM string sanitisation
+	ok($status = $tool->get("AA19 AAA"), "Get method doesn't croak when there's a space in the VRM");
+	is($status->registrationNumber, "AA19AAA", "Registration number has had the space removed");
+	sleep 1;
+	ok($status = $tool->get("aa19aaa"), "Get method doesn't croak when lower case characters are in the VRM");
+	is($status->registrationNumber, "AA19AAA", "Registration number has been upper cased");
+	sleep 1;
+	like(dies { $tool->get("AA19!AAA") }, qr/VRM contains an unexpected character/, "Get method does croak when there's a funny character in the VRM");
+	like(dies { $tool->get("AA19 AAAA") }, qr/VRM too long/, "Get method does croak when there's the VRM is longer than permitted by law");
 }
 
 done_testing;
