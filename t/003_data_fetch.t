@@ -45,7 +45,7 @@ SKIP: {
 	is($status->message, "404 Not Found", "Valid car returns error message");
 	sleep 1;
 	
-	# Get a valid car
+	# Get a car with no MoT data
 	ok($status = $tool->get("AA19AAA"), "Get method doesn't croak");
 	ok(defined($status), "Get method returns something");
 	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
@@ -66,6 +66,9 @@ SKIP: {
 	is_deeply($status->markedForExport, 0, "markedForExport is a literal zero");
 	my $reg_month = DateTime->new(year => 2019, month => 07, time_zone => 'Europe/London');
 	is_deeply($status->monthOfFirstRegistration, $reg_month, "V5C issue date has correct values and time zone");
+	ok(length($status->motStatus) > 1, "MOT status has some text");
+	is($status->registrationNumber, "AA19AAA", "Registration number is the same as the one we asked for");
+	is($status->vrm, "AA19AAA", "VRM is an alias of regsitraion Number"); 
 }
 
 done_testing;

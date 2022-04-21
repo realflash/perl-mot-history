@@ -3,8 +3,9 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration);
-use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration);
+use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration vrm);
+use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration
+					motStatus registrationNumber vrm);
 use DateTime;
 
 sub BUILD
@@ -27,6 +28,20 @@ sub markedForExport
 	
 	if($self->{'markedForExport'}) { return 1 };		# Looks pointless but converts JSON::PP::Boolean into 1 or 0
 	return 0;
+}
+
+# Alias for registrationNumber
+sub vrm
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		$self->registrationNumber($newval);
+	}
+	
+	return $self->registrationNumber;
 }
 
 # Alias for make
