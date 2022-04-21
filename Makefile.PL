@@ -15,7 +15,7 @@ WriteMakefile(
         'Try::Tiny'				=> 0,
         'LWP::UserAgent'		=> 0,
         'Class::Tiny'			=> 0,
-	}
+	},
     ABSTRACT_FROM     => 'lib/UK/Vehicle.pm', # retrieve abstract from module
     AUTHOR            => 'Ian Gibbs <igibbs@cpan.org>',
     LICENSE           => 'gpl',
