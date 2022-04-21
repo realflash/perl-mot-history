@@ -17,7 +17,7 @@ use JSON;
 use Try::Tiny;
 use Scalar::Util qw(looks_like_number);
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 sub BUILD
 {	
@@ -133,14 +133,14 @@ UK::Vehicle - Perl module to query the UK's Vehicle Enquiry Service API
 
 This module helps you query the Vehicle Enquiry Service API provided by 
 the UK's DVLA. In order to use it you must have an API key, which you 
-can apply for at L<here|https://register-for-ves.driver-vehicle-licensing.api.gov.uk/>
+can apply for L<here|https://register-for-ves.driver-vehicle-licensing.api.gov.uk/>
 
 You will likely need a decent reason to have an API key. It takes days 
 to get one so you may want to apply now. 
 
-=head2 EXPORT
+=head2 EXPORTS
 
-None by default.
+None.
 
 =head1 CONSTRUCTORS
 
@@ -183,11 +183,11 @@ Any spaces in the VRM you provide will be automatically removed. Lower
 
 =head1 BUGS AND REQUESTS
 
-Please report to L<the GitHub repository|https://https://github.com/realflash/perl-uk-vehicle>
+Please report to L<the GitHub repository|https://github.com/realflash/perl-uk-vehicle>.
 
 =head1 AUTHOR
 
-Ian Gibbs, E<lt>igibbs@cpan.org<gt>
+Ian Gibbs, E<lt>igibbs@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -1,5 +1,8 @@
 Revision history for Perl extension UK::Vehicle.
 
-0.01  Tue Apr 19 16:47:07 2022
+0.2 Thu Apr 21 17:25:00 2022
+    - Documentation fixes
+
+0.1 Tue Apr 19 16:47:07 2022
 	- first version
 

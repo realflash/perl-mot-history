@@ -17,11 +17,11 @@ See L<UK::Vehicle> for usage information.
 
 =over 3
 
-=item result
+=item result()
 
 Whether the query  against the VES API for information on the vehicle 
 was successful. If it wasn't, more information is available using the 
-method B<message>.
+method B<message>().
 
 Returns 1 if successful, 0 otherwise. Successful means a record for the 
 vehicle was found and returned. 
@@ -35,13 +35,13 @@ For information on possible responses see L<here|https://developer-portal.driver
 
 The registered CO2 emissions in grammes per km. 
 
-Retirns an integer.
+Returns an integer.
 
 =item colour()
 
 The registered colour of the vehicle.
 
-Returnsa a string.
+Returns a string.
 
 =cut
 
@@ -60,7 +60,7 @@ sub BUILD
 
 =item dateOfLastV5CIssued()
 
-The date the most recent V5 was issued. This can be helpful in 
+The date the most recent V5 was issued, to the day. This can be helpful in 
 determining when it was most revently registered to a new keeper, and 
 whether the V5 you have in front of you is the current one. 
 
@@ -101,20 +101,33 @@ Returns an integer.
 
 The relevant european emissions standard with which the vehicle complies.
 
-Returns a string
+Returns a string.
 
 =item fuelType()
 
-The type of fuel the vehicle uses. Some values currently in use are 
-"PETROL", "DIESEL", and "ELECTRICITY", but the API documentation doesn't
+The type of fuel the vehicle uses. he API documentation doesn't
  list this as an enumerated value, so presumably they don't know what's 
  coming over the next ten years and are leaving flexible. Plan for 
  anything! If you've seen other values let me know and I'll add it to 
- the list.
+ the list. Some values currently in use are 
+"PETROL", "DIESEL", and "ELECTRICITY", but t
+
+=over 5
+
+=item * "PETROL"
+
+=item * "DIESEL"
+
+=item * "HYBRID ELECTRIC"
+
+=item * "ELECTRICITY"
+
+=back
  
 Returns a string containing god knows what.
 
 =item make()
+
 =item manufacturer()
 
 The registered manufacturer name of the vehicle. 
@@ -205,15 +218,21 @@ sub monthOfFirstRegistration
 
 A string representing the vehicle's mot test status.
 
-Returns a string with one of these value:
+Returns a string with one of these values:
 =over 5
+
 =item * "No details held by DVLA"
+
 =item * "No results returned" (don't know the difference)
+
 =item * "Not valid" (last MoT pass has expired)
+
 =item * "Valid" (last MoT pass has not expired)
+
 =back
 
 =item registrationNumber
+
 =item vrm
 
 The VRM of the vehicle for which the status information was returned. 
@@ -408,7 +427,7 @@ Please report to L<the GitHub repository|https://https://github.com/realflash/pe
 
 =head1 AUTHOR
 
-Ian Gibbs, E<lt>igibbs@cpan.org<gt>
+Ian Gibbs, E<lt>igibbs@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
