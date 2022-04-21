@@ -53,6 +53,7 @@ SKIP: {
 	dump $status;
 	
 	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
+	ok(length($status->colour) > 2, "Colour has some text");
 }
 
 done_testing;
