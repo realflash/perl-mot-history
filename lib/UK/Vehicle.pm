@@ -76,7 +76,7 @@ sub get
 		$json->{'message'} = "success";
 	}
 	
-	return bless $json, "UK::Vehicle::Status";
+	return UK::Vehicle::Status->new($json);
 }
 
 sub timeout($)

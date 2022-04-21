@@ -3,7 +3,38 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use Class::Tiny qw(result message co2Emissions colour);
+use subs qw(dateOfLastV5CIssued);
+use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued);
+use DateTime;
+
+sub BUILD
+{	
+	my ($self, $args) = @_;
+
+	if($args->{'dateOfLastV5CIssued'})
+	{
+		$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'});
+	}
+}
+
+sub dateOfLastV5CIssued
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		if(ref($newval) eq "DateTime")
+		{
+			$self->{'dateOfLastV5CIssued'} = $newval;
+		}
+		else
+		{	# Assume YYYY-MM-DD as per data returned by the VES API
+			$self->{'dateOfLastV5CIssued'} = DateTime->new(year => substr($newval, 0, 4), month => substr($newval, 5, 2), day => substr($newval, 8, 2), time_zone => 'Europe/London');
+		}
+    }
+	return $self->{'dateOfLastV5CIssued'};
+}
 
 1;
 __END__

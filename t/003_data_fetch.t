@@ -9,6 +9,7 @@ use UK::Vehicle;
 use UK::Vehicle::Status;
 use Scalar::Util qw(looks_like_number);
 use Config::Tiny;
+use DateTime;
 
 my $ves_test_url = "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles";
 
@@ -50,10 +51,12 @@ SKIP: {
 	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
 	is($status->result, 1, "Valid car returns success code 1");
 	is($status->message, "success", "Valid car returns success message");
-	dump $status;
 	
 	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
 	ok(length($status->colour) > 2, "Colour has some text");
+	is(ref($status->dateOfLastV5CIssued), "DateTime", "V5C issue date is a DateTime");
+	my $v5c_date = DateTime->new(year => 2020, month => 07, day => 17, time_zone => 'Europe/London');
+	is_deeply($status->dateOfLastV5CIssued, $v5c_date, "V5C issue date has correct values and time zone");
 }
 
 done_testing;
