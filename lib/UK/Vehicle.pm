@@ -98,11 +98,14 @@ Optionally also set the connect timeout in seconds. Default value is 10.
 =item get(string)
 
    my $status = $tool->get("ZZ99ABC");
-   $status->{'result'}; # 1 if success, 0 if not
-   $status->{'message'}; # "success" if result was 1, error message if not
+   $status->result;  # 1 if success, 0 if not
+   $status->message; # "success" if result was 1, error message if not
+   $status->make; # "ROVER" etc.
 
 Query the API for the publicly-available information about a vehicle. 
-Returns a hash ref:
+Returns a L<UK::Vehicle::Status>, which has convenience methods but is
+also just a wrapper around the perl representation of the JSON object 
+returned by the VES API:
 
 	{
 	  "result" => 1,
@@ -130,10 +133,21 @@ Returns a hash ref:
 	  "euroStatus" => "Euro 5"
 	}
    
-You can access any of these pieces of data by referencing that value in 
-the hash reference:
+You can access any of these pieces of data by directly referencing 
+that value in the hash reference:
 
-   print $result->{'model'};
+   print $result->{'make'};
+
+or use the corresponding convenience method:
+
+   print $result->make;
+
+There may be differences in the values returned; for example
+
+	$result->{'taxDueDate'}		# get the raw string returned by the API
+	$result->taxDueDate			# get a L<DateTime> representing the date
+
+For more information, see L<UK::Vehicle::Status>.
    
 Any spaces in the VRM you provide will be automatically removed. Lower
  case characters will be changed to upper case. If the
@@ -143,14 +157,14 @@ Any spaces in the VRM you provide will be automatically removed. Lower
 =item is_mot_current()
 =item is_tax_current()
 =item is_sorn_declared()
-
+=item ..and other helper methods
 	See L<UK::Vehicle::Status>
 
 =back
 
 =head1 BUGS AND REQUESTS
 
-Please report to L<the GitHub repository|https://https://github.com/realflash/perl-mot-history>
+Please report to L<the GitHub repository|https://https://github.com/realflash/perl-uk-vehicle>
 
 =head1 AUTHOR
 
