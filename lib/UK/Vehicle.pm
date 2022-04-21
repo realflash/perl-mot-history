@@ -3,7 +3,7 @@ package UK::Vehicle;
 use 5.030000;
 use strict;
 use warnings;
-require UK::Vehicle::Status;
+use UK::Vehicle::Status;
 use LWP::UserAgent;
 use subs 'timeout';
 use Class::Tiny qw(ves_api_key _ua timeout);
