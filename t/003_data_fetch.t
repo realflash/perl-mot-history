@@ -62,6 +62,7 @@ SKIP: {
 	ok(length($status->fuelType) > 2, "Fuel type has some text");
 	ok(length($status->make) > 1, "Manufacturer has some text");
 	is($status->manufacturer, $status->make, "Manufacturer is an alias for make");
+	is_deeply($status->markedForExport, 0, "markedForExport is a literal zero");
 }
 
 done_testing;

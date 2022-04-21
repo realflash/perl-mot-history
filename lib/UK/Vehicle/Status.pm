@@ -3,8 +3,8 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use subs qw(dateOfLastV5CIssued manufacturer);
-use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer);
+use subs qw(dateOfLastV5CIssued manufacturer markedForExport);
+use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport);
 use DateTime;
 
 sub BUILD
@@ -14,6 +14,21 @@ sub BUILD
 	$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'}) if($args->{'dateOfLastV5CIssued'});
 }
 
+sub markedForExport
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		$self->{'markedForExport'} = $newval;
+	}
+	
+	if($self->{'markedForExport'}) { return 1 };		# Looks pointless but converts JSON::PP::Boolean into 1 or 0
+	return 0;
+}
+
+# Alias for make
 sub manufacturer
 {
 	my $self = shift;
