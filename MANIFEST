@@ -3,5 +3,7 @@ Makefile.PL
 MANIFEST
 README
 t/001_load.t
+t/002_constructors.t
+t/003_data_fetch.t
 lib/UK/Vehicle.pm
 lib/UK/Vehicle/Status.pm
