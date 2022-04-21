@@ -109,20 +109,12 @@ The type of fuel the vehicle uses. he API documentation doesn't
  list this as an enumerated value, so presumably they don't know what's 
  coming over the next ten years and are leaving flexible. Plan for 
  anything! If you've seen other values let me know and I'll add it to 
- the list. Some values currently in use are 
-"PETROL", "DIESEL", and "ELECTRICITY", but t
+ the list. Some values currently in use are:
 
-=over 5
-
-=item * "PETROL"
-
-=item * "DIESEL"
-
-=item * "HYBRID ELECTRIC"
-
-=item * "ELECTRICITY"
-
-=back
+- "PETROL"
+- "DIESEL"
+- "HYBRID ELECTRIC"
+- "ELECTRICITY"
  
 Returns a string containing god knows what.
 
@@ -219,15 +211,10 @@ sub monthOfFirstRegistration
 A string representing the vehicle's mot test status.
 
 Returns a string with one of these values:
-=over 5
-
-=item * "No details held by DVLA"
-
-=item * "No results returned" (don't know the difference)
-
-=item * "Not valid" (last MoT pass has expired)
-
-=item * "Valid" (last MoT pass has not expired)
+- "No details held by DVLA"
+- "No results returned" (don't know the difference)
+- "Not valid" (last MoT pass has expired)
+- "Valid" (last MoT pass has not expired)
 
 =back
 
@@ -302,12 +289,10 @@ sub taxDueDate
 A string representing the vehicle's tax status.
 
 Returns a string with one of these value:
-=over 5
-=item * "Not Taxed for on Road Use" (farm vehicle etc.?)
-=item * "SORN"
-=item * "Taxed" (last MoT pass has expired)
-=item * "Untaxed"
-=back
+- "Not Taxed for on Road Use" (farm vehicle etc.?)
+- "SORN"
+- "Taxed" (last MoT pass has expired)
+- "Untaxed"
 
 =item typeApproval()
 
