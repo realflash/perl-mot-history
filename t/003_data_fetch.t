@@ -23,12 +23,36 @@ SKIP: {
 	my $tool;
 	$tool = UK::Vehicle->new(ves_api_key => $config->{'KEYS'}->{'VES_API_KEY'}, _use_uat => 0);
 	my $status;
+
+	TODO: 
+	{
+		todo_skip('these tests only work in UAT',1);
+		# Simulated 400
+		ok($status = $tool->get("ER19BAD"), "Get method doesn't croak when HTTP status code is 400");
+		ok(defined($status), "Get method returns something when HTTP status code is 400");
+		is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+		is($status->result, 0, "Bad car returns success code 0");
+		is($status->message, "400 Bad Request", "Invalid car returns error message");
+		sleep 1;
+	}
+
+	# Get an unknown car
+	ok($status = $tool->get("AA19AAB"), "Get method doesn't croak");
+	ok(defined($status), "Get method returns something");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 0, "Valid car returns success code 0");
+	is($status->message, "404 Not Found", "Valid car returns error message");
+	sleep 1;
+	
+	# Get a valid car
 	ok($status = $tool->get("AA19AAA"), "Get method doesn't croak");
 	ok(defined($status), "Get method returns something");
 	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
 	is($status->result, 1, "Valid car returns success code 1");
 	is($status->message, "success", "Valid car returns success message");
 	dump $status;
+	
+	
 }
 
 done_testing;
