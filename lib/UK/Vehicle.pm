@@ -16,6 +16,7 @@ use Carp;
 use JSON;
 use Try::Tiny;
 use Scalar::Util qw(looks_like_number);
+use Data::Dump qw(dump);
 
 our $VERSION = '0.01';
 
@@ -51,8 +52,9 @@ sub get
 	my $vrm = shift;
 
 	my $msg_json = "{\"registrationNumber\": \"$vrm\"}";
-	my $req = HTTP::Request->new('POST', $self->_url);
+	my $req = HTTP::Request->new('POST', $self->_url."/v1/vehicles");
 	$req->header('Content-Type' => 'application/json');
+	$req->header('Accept' => 'application/json');
 	$req->header('x-api-key' => $self->ves_api_key);
 	$req->content($msg_json);
 	my $response = $self->_ua->request($req);
