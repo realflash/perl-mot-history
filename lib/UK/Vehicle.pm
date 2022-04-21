@@ -16,7 +16,6 @@ use Carp;
 use JSON;
 use Try::Tiny;
 use Scalar::Util qw(looks_like_number);
-use Data::Dump qw(dump);
 
 our $VERSION = '0.01';
 

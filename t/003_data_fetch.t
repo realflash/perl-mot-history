@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Test::More 0.98;
 use Test2::Tools::Exception qw/dies lives try_ok/;
-use Data::Dump qw(dump);
 use UK::Vehicle;
 use UK::Vehicle::Status;
 use Scalar::Util qw(looks_like_number);
