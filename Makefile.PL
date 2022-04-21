@@ -22,6 +22,7 @@ WriteMakefile(
     TEST_REQUIRES => {
         'Test::More'				=> 0.88,
         'Test2::Tools::Exception'	=> 0,
+        'Test::Pod'					=> 1.00,
         'Config::Tiny' 				=> 0,
         'JSON'						=> 0,
         'DateTime'					=> 0,
