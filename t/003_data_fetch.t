@@ -57,6 +57,11 @@ SKIP: {
 	is(ref($status->dateOfLastV5CIssued), "DateTime", "V5C issue date is a DateTime");
 	my $v5c_date = DateTime->new(year => 2020, month => 07, day => 17, time_zone => 'Europe/London');
 	is_deeply($status->dateOfLastV5CIssued, $v5c_date, "V5C issue date has correct values and time zone");
+	ok(looks_like_number($status->engineCapacity), "Engine capacity is a number");
+	ok(length($status->euroStatus) > 5, "Euro status has some text");
+	ok(length($status->fuelType) > 2, "Fuel type has some text");
+	ok(length($status->make) > 1, "Manufacturer has some text");
+	is($status->manufacturer, $status->make, "Manufacturer is an alias for make");
 }
 
 done_testing;

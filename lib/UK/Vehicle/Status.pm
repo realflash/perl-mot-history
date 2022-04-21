@@ -3,18 +3,28 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use subs qw(dateOfLastV5CIssued);
-use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued);
+use subs qw(dateOfLastV5CIssued manufacturer);
+use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer);
 use DateTime;
 
 sub BUILD
 {	
 	my ($self, $args) = @_;
 
-	if($args->{'dateOfLastV5CIssued'})
-	{
-		$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'});
+	$self->dateOfLastV5CIssued($args->{'dateOfLastV5CIssued'}) if($args->{'dateOfLastV5CIssued'});
+}
+
+sub manufacturer
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		$self->make($newval);
 	}
+	
+	return $self->make;
 }
 
 sub dateOfLastV5CIssued
