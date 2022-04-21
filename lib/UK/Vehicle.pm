@@ -157,12 +157,6 @@ Any spaces in the VRM you provide will be automatically removed. Lower
  VRM you provide contains weird characters, you will get 0 back and an
  appropriate message. Permitted characters are 0-9, a-z, A-Z.   
 
-=item is_mot_current()
-=item is_tax_current()
-=item is_sorn_declared()
-=item ..and other helper methods
-	See L<UK::Vehicle::Status>
-
 =back
 
 =head1 BUGS AND REQUESTS
