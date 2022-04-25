@@ -1,5 +1,10 @@
 Revision history for Perl extension UK::Vehicle.
 
+0.3 Mon Apr 25 19:02:00 2022
+    - Add motExpiryDate() method
+    - Documentation fixes
+    - Fix tests that check API data that is constantly changing
+
 0.2 Thu Apr 21 17:25:00 2022
     - Documentation fixes
 
