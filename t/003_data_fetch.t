@@ -73,6 +73,7 @@ SKIP: {
 	sleep 1;
 	
 	# Check properties
+	my $now = DateTime->now();
 	ok(looks_like_number($status->co2Emissions), "Emissions is a number");
 	ok(length($status->colour) > 2, "Colour has some text");
 	is(ref($status->dateOfLastV5CIssued), "DateTime", "V5C issue date is a DateTime");
@@ -90,7 +91,7 @@ SKIP: {
 	is($status->registrationNumber, "AA19AAA", "Registration number is the same as the one we asked for");
 	is($status->vrm, "AA19AAA", "VRM is an alias of regsitraion Number"); 
 	ok(looks_like_number($status->revenueWeight), "revenueWeight is a number");
-	my $tax_due = DateTime->new(year => 2023, month => 04, day => 21, time_zone => 'Europe/London');
+	my $tax_due = DateTime->new(year => $now->year + 1, month => $now->month, day => $now->day, time_zone => 'Europe/London');
 	is_deeply($status->taxDueDate, $tax_due, "Tax due date has correct values and time zone");
 	ok(length($status->taxStatus) > 2, "taxStatus has some text");
 	ok(length($status->typeApproval) > 0, "typeApproval has some text");
@@ -98,6 +99,19 @@ SKIP: {
 	is($status->wheelPlan, $status->wheelPlan, "wheelPlan is an alias for wheelplan");
 	my $year_made = DateTime->new(year => 2019, time_zone => 'Europe/London');
 	is_deeply($status->yearOfManufacture, $year_made, "Year made has correct values and time zone");
+
+	# Get a car with MoT data
+	ok($status = $tool->get("AA19MOT"), "Get method doesn't croak");
+	ok(defined($status), "Get method returns something");
+	is(ref($status), "UK::Vehicle::Status", "Returns a UK::Vehicle::Status");
+	is($status->result, 1, "Valid car returns success code 1");
+	is($status->message, "success", "Valid car returns success message");
+	my $mot_expiry = DateTime->new(year => $now->year + 1, month => $now->month, day => $now->day, time_zone => 'Europe/London');
+	is_deeply($status->motExpiryDate, $mot_expiry, "MoT expiry has correct values and time zone");
+	
+	sleep 1;
+	
+
 
 	# VRM string sanitisation
 	ok($status = $tool->get("AA19 AAA"), "Get method doesn't croak when there's a space in the VRM");

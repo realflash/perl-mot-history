@@ -3,9 +3,9 @@ package UK::Vehicle::Status;
 use 5.030000;
 use strict;
 use warnings;
-use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration vrm taxDueDate yearOfManufacture wheelPlan);
+use subs qw(dateOfLastV5CIssued manufacturer markedForExport monthOfFirstRegistration motExpiryDate vrm taxDueDate yearOfManufacture wheelPlan);
 use Class::Tiny qw(result message co2Emissions colour dateOfLastV5CIssued engineCapacity euroStatus fuelType make manufacturer markedForExport monthOfFirstRegistration
-					motStatus registrationNumber vrm revenueWeight taxDueDate taxStatus typeApproval wheelplan wheelPlan yearOfManufacture);
+					motExpiryDate motStatus registrationNumber vrm revenueWeight taxDueDate taxStatus typeApproval wheelplan wheelPlan yearOfManufacture);
 
 use DateTime;
 
@@ -53,6 +53,7 @@ sub BUILD
 	$self->monthOfFirstRegistration($args->{'monthOfFirstRegistration'}) if($args->{'monthOfFirstRegistration'});
 	$self->taxDueDate($args->{'taxDueDate'}) if($args->{'taxDueDate'});
 	$self->yearOfManufacture($args->{'yearOfManufacture'}) if($args->{'yearOfManufacture'});
+	$self->motExpiryDate($args->{'motExpiryDate'}) if($args->{'motExpiryDate'});
 }
 
 
@@ -206,6 +207,37 @@ sub monthOfFirstRegistration
 
 =pod
 
+=item motExpiryDate()
+
+The date the current MoT expires, to the day. 
+
+Returns a L<DateTime> object. The time portion of this object will be 
+set to to 00:00:00, and the timezone "Europe/London." Returns undef if 
+no MoT has been done.
+
+=cut
+
+sub motExpiryDate
+{
+	my $self = shift;
+	my $newval = shift;
+	
+    if($newval)
+    {
+		if(ref($newval) eq "DateTime")
+		{
+			$self->{'motExpiryDate'} = $newval;
+		}
+		else
+		{	# Assume YYYY-MM-DD as per data returned by the VES API
+			$self->{'motExpiryDate'} = DateTime->new(year => substr($newval, 0, 4), month => substr($newval, 5, 2), day => substr($newval, 8, 2), time_zone => 'Europe/London');
+		}
+    }
+	return $self->{'motExpiryDate'};
+}
+
+=pod
+
 =item motStatus()
 
 A string representing the vehicle's mot test status.
@@ -215,8 +247,6 @@ Returns a string with one of these values:
 - "No results returned" (don't know the difference)
 - "Not valid" (last MoT pass has expired)
 - "Valid" (last MoT pass has not expired)
-
-=back
 
 =item registrationNumber
 
