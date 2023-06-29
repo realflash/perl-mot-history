@@ -121,13 +121,10 @@ UK::Vehicle - Perl module to query the UK's Vehicle Enquiry Service API
 =head1 SYNOPSIS
 
 	use UK::Vehicle;
-	my $tool  = new UK::Vehicle:(ves_api_key => '<your-api-key>');
+	my $tool  = new UK::Vehicle::(ves_api_key => '<your-api-key>');
 	my $status = $tool->get('<vehicle-vrm>');
 	$status->result; 	# 1 for success, 0 for failure
 	$status->message;	# 'success' or an error message
-	$status->is_mot_valid();
-	$status->is_vehicle_taxed();
-	etc..
 
 =head1 DESCRIPTION
 
@@ -135,7 +132,7 @@ This module helps you query the Vehicle Enquiry Service API provided by
 the UK's DVLA. In order to use it you must have an API key, which you 
 can apply for L<here|https://register-for-ves.driver-vehicle-licensing.api.gov.uk/>
 
-You will likely need a decent reason to have an API key. It takes days 
+You will likely need a decent reason to have an API key. It can take days 
 to get one so you may want to apply now. 
 
 =head2 EXPORTS
